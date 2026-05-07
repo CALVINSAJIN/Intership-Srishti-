@@ -73,11 +73,14 @@ word_length=len(word)
 # Create a display list with underscores
 display = ["_"] * word_length
 
-# Randomly reveal about 30% of the letters as a hint
-num_to_reveal = max(1, word_length // 3)
-indices = r.sample(range(word_length), num_to_reveal)
-for i in indices:
-    display[i] = word[i]
+# Randomly reveal about 30% of the unique letters as a hint
+unique_letters = list(set(word))
+num_to_reveal = max(1, len(unique_letters) // 3)
+letters_to_reveal = r.sample(unique_letters, num_to_reveal)
+for char in letters_to_reveal:
+    for i in range(word_length):
+        if word[i] == char:
+            display[i] = char
 
 lives = 6
 guessed_wrong = set()
@@ -97,19 +100,7 @@ while "_" in display and lives > 0:
 
     if guess in display or guess in guessed_wrong:
         print(f"The letter '{guess}' has already been guessed or revealed. Try another.")
-    if guess in guessed_wrong:
-        print(f"You already guessed '{guess}' and it's not in the word. Try another.")
         continue
-
-    # If the letter is already partially revealed, check if there are still hidden ones
-    if guess in display:
-        hidden_left = False
-        for i in range(word_length):
-            if word[i] == guess and display[i] == "_":
-                hidden_left = True
-        if not hidden_left:
-            print(f"All instances of '{guess}' are already visible. Try another.")
-            continue
 
     if guess in word:
         print(f"Good job! '{guess}' is in the word.")
