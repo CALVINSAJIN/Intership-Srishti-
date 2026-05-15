@@ -1,0 +1,15 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.streamlit/secrets.toml
+models/*.yml
+models/*.xml
+data/*.xlsx
+data/attendance.csv
+data/students.csv
+dataset/*/
+!dataset/README.md
+!dataset/.gitkeep
+
